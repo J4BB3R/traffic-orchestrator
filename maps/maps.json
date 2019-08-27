@@ -1,9 +1,5 @@
 {
   "enable" : [
-    {
-      "linas-monthlery" : [
-        "main-highway"
-      ]
-    }
+    "linas-monthlery"
   ]
 }
