@@ -11,7 +11,7 @@
 #define TRAFFIC_ORCHESTRATOR_WEBSOCKET_SERVER_H
 
 
-class websocket_server {
+class WebsocketServer {
 
 };
 

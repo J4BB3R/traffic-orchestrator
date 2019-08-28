@@ -11,7 +11,7 @@
 #define TRAFFIC_ORCHESTRATOR_TCP_INTERFACE_H
 
 
-class tcp_interface {
+class TCPInterface {
 
 };
 

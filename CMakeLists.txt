@@ -11,4 +11,8 @@ add_compile_options("-Wextra")
 add_compile_options("-O0")
 add_compile_options("-g")
 
+add_library(includes INTERFACE)
+
+add_subdirectory(containers)
+
 add_executable(${PROJECT_NAME} traffic-orchestrator.cpp)

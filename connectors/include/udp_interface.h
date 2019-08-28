@@ -11,7 +11,7 @@
 #define TRAFFIC_ORCHESTRATOR_UDP_INTERFACE_H
 
 
-class udp_interface {
+class UDPInterface {
 
 };
 

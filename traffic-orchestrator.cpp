@@ -5,10 +5,9 @@
 **
 **   Created by J4BB3R on 27/08/19.
 */
+#include <iostream>
 
 int main() {
-
-
-
+    std::cout << "CUL" << std::endl;
     return 0;
 }

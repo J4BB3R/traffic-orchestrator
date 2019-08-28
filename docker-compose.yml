@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  web:
+    image: nginx
+    container_name: webview
+    volumes:
+      - ./webview:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_PORT=80
+
+  to:
+    build: .
+    container_name: to
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+      - "8083:8083"
+    volumes:
+      - to:/to
+      - ./cartographer/maps:/to/cartographer/maps
+
+volumes:
+  to:
