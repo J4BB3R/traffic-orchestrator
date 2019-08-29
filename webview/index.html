@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Traffic Orchestrator Real-Time Tracker</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" href="lib/leaflet.css"/>
+    <script src="lib/leaflet.js"></script>
+    <script src="track.js"></script>
 </head>
 <body>
-    <h1>Traffic Orchestrator Real-Time Tracker</h1>
+    <div id="top-banner">
+        <h1>Traffic Orchestrator Real-Time Tracker</h1>
+        <p id="version">v0.10</p>
+        <select id="locations">
+            <option value ="none">Nowhere</option>
+            <option value ="linas" selected="selected">Monthlery-Linas</option>
+            <option value ="vigo">Vigo</option>
+        </select>
+        <button id="start-button">Start Track</button>
+    </div>
+    <div id="map" class="map"></div>
 </body>
 </html>
