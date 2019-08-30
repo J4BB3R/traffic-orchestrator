@@ -12,6 +12,7 @@
 
 struct Telemetry_Paquet {
     std::string uuid;
+    bool connected;
     int64_t time;
     Gps_Point coordinates;
     long lane_id;

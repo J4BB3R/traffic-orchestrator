@@ -6,12 +6,14 @@
     <link rel="stylesheet" type="text/css" href="style.css"/>
     <link rel="stylesheet" href="lib/leaflet.css"/>
     <script src="lib/leaflet.js"></script>
+    <script src="lib/leaflet.rotatedMarker.js"></script>
     <script src="track.js"></script>
 </head>
 <body>
     <div id="top-banner">
         <h1>Traffic Orchestrator Real-Time Tracker</h1>
-        <p id="version">v0.10</p>
+        <p id="version">v0.20</p>
+        <p class="" id="notif-entry">Connection error</p>
         <select id="locations">
             <option value ="none">Nowhere</option>
             <option value ="linas" selected="selected">Monthlery-Linas</option>
@@ -19,6 +21,12 @@
         </select>
         <button id="start-button">Start Track</button>
     </div>
+<!--    <div id="info-panel">-->
+<!--        <h2>Objects on Map:</h2>-->
+<!--        <ul>-->
+<!--            <li>OBU6</li>-->
+<!--        </ul>-->
+<!--    </div>-->
     <div id="map" class="map"></div>
 </body>
 </html>
