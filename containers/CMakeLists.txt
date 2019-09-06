@@ -5,6 +5,6 @@ project(containers
         LANGUAGES CXX)
 
 set(LIB_H
-        telemetry_data.hpp)
+        telemetry_data.h)
 
 target_include_directories(includes INTERFACE ${LIB_H})

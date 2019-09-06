@@ -7,7 +7,7 @@ WORKDIR /to
 RUN apk add gcc \
             g++ \
             make \
-            cmake tree
+            cmake
 
 RUN cmake --version
 
