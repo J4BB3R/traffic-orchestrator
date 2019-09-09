@@ -13,15 +13,24 @@
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 
+#include <set>
+
 class WebsocketServer {
 public:
     WebsocketServer();
     ~WebsocketServer() {
         delete m_server;
     }
+
+    void on_open(websocketpp::connection_hdl hdl);
+    void on_close(websocketpp::connection_hdl hdl);
+
+    void sendToAll(const std::string& message);
 private:
     int m_port{8081}; // Default ones
+
     websocketpp::server<websocketpp::config::asio>* m_server;
+    std::set<websocketpp::connection_hdl,std::owner_less<websocketpp::connection_hdl>> m_connections;
 };
 
 

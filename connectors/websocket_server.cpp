@@ -19,6 +19,9 @@ WebsocketServer::WebsocketServer() {
 
         m_server->init_asio();
 
+        m_server->set_open_handler(bind(&WebsocketServer::on_open,this,websocketpp::lib::placeholders::_1));
+        m_server->set_close_handler(bind(&WebsocketServer::on_close,this,websocketpp::lib::placeholders::_1));
+
         m_server->listen(m_port);
         m_server->start_accept();
         m_server->run();
@@ -27,6 +30,20 @@ WebsocketServer::WebsocketServer() {
         std::cout << e.what() << std::endl;
     } catch (...) {
         std::cout << "Something wrong with WebSocket++ ..." << std::endl;
+    }
+}
+
+void WebsocketServer::on_open(websocketpp::connection_hdl hdl) {
+    m_connections.insert(hdl);
+}
+
+void WebsocketServer::on_close(websocketpp::connection_hdl hdl) {
+    m_connections.erase(hdl);
+}
+
+void WebsocketServer::sendToAll(const std::string& message) {
+    for (const auto& it : m_connections) {
+        m_server->send(it,message,websocketpp::frame::opcode::text);
     }
 }
 
