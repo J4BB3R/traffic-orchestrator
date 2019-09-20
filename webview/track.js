@@ -1,17 +1,18 @@
 let ws;
 
+let colorIndex = new Map();
+
 let vehicules = new Map();
 let recommandations = new Map();
+
+let maxColor = 6;
 
 let locations = new Map([["linas",[48.624418, 2.243595,18]],
                                 ["vigo",[42.102571, -8.614376,19]],
                                 ["none",[0,0,3]]]);
 
-let mapMetaDatas = [["bitmap/monthlery.jpg", 48.622197,2.235964,48.628130,2.251932],
+let mapMetaDatas = [["bitmap/monthlery.jpg",48.622200, 2.235935,48.628147, 2.251883],
                     ["bitmap/vigo.jpg", 42.100756, -8.616682,42.104132, -8.612138]];
-
-let carIcon = L.icon({iconUrl: 'lib/img/car.png',iconSize: [15, 15]});
-let projectionIcon = L.icon({iconUrl: 'lib/img/proj.png',iconSize: [25, 25]});
 
 window.addEventListener('load',function(event) {
 
@@ -28,13 +29,6 @@ window.addEventListener('load',function(event) {
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         id: 'mapbox.streets'
     }).addTo(map);
-
-    marker = L.marker([48.624418, 2.243595],{icon: projectionIcon}).bindTooltip("PUTE",{
-        permanent: true,
-        direction: 'top',
-        opacity: 0.5
-    });
-    marker.addTo(map);
 
     mapMetaDatas.forEach(function (elem) {
         L.imageOverlay(elem[0], [[elem[1],elem[2]],[elem[3],elem[4]]]).addTo(map);
@@ -55,7 +49,7 @@ window.addEventListener('load',function(event) {
             ws.close();
         } else {
             button.id = "stop-button";
-            ws = new WebSocket('ws://'+window.location.hostname+':8081');
+            ws = new WebSocket('ws://'+window.location.hostname+':8088');
 
             notif = document.getElementById("notif-entry");
             ws.onopen = function () {
@@ -78,6 +72,16 @@ window.addEventListener('load',function(event) {
                     notif.className = "";
                 },5000);
                 button.innerText = window.getComputedStyle(button,null).getPropertyValue('content').split('"')[1];
+
+                recommandations.forEach((value, key) => {
+                    map.removeLayer(value);
+                });
+                recommandations.clear();
+
+                vehicules.forEach((value, key) => {
+                    map.removeLayer(value);
+                });
+                vehicules.clear();
             };
 
             ws.onerror = function(err) {
@@ -98,23 +102,20 @@ function handleTelemetryPaquet(str) {
             if (vehicules.get(obj.uuid) !== undefined) {
                 vehicules.get(obj.uuid).setLatLng([obj.position.latitude,obj.position.longitude]).update();
             } else {
-                marker = L.marker([obj.position.latitude,obj.position.longitude],{icon: carIcon}).bindTooltip(obj.uuid,{
+                colorIndex.set(obj.uuid,(vehicules.size+1)%maxColor);
+                marker = L.marker([obj.position.latitude,obj.position.longitude],{icon: L.icon({iconUrl: 'lib/img/car'+(vehicules.size+1)%maxColor+'.png',iconSize: [15, 15]})}).bindTooltip(obj.uuid,{
                     permanent: true,
                     direction: 'top',
-                    opacity: 0.5
+                    opacity: 0.7
                 });
                 marker.addTo(map);
                 vehicules.set(obj.uuid,marker);
             }
         } else if (obj.type === "recommandation") {
             if (recommandations.get(obj.uuid) !== undefined) {
-                recommandations.get(obj.uuid).setLatLng([obj.position.latitude,obj.position.longitude],{rotationAngle: obj.heading}).update();
+                recommandations.get(obj.uuid).setLatLng([obj.position.latitude,obj.position.longitude]).setRotationAngle(obj.heading).update();
             } else {
-                marker = L.marker([obj.position.latitude,obj.position.longitude],{icon: projectionIcon,rotationAngle: obj.heading}).bindTooltip(obj.uuid,{
-                    permanent: true,
-                    direction: 'top',
-                    opacity: 0.5
-                });
+                marker = L.marker([obj.position.latitude,obj.position.longitude],{icon: L.icon({iconUrl: 'lib/img/proj'+colorIndex.get(obj.uuid)+'.png',iconSize: [25, 25]}),rotationAngle: obj.heading,rotationOrigin:'center'});
                 marker.addTo(map);
                 recommandations.set(obj.uuid,marker);
             }
